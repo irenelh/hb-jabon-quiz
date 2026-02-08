@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuentra tu Jabón Ideal - HB Honey Bubble</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .honey-decoration {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            font-size: 150px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        h1 {
+            color: #D4A574;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #D4A574, #F4C542);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .question {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option {
+            background: #f9f9f9;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 18px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .option:active {
+            transform: scale(0.98);
+        }
+
+        .option:hover {
+            background: #FFF8DC;
+            border-color: #D4A574;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #FFF8DC;
+            border-color: #D4A574;
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.2);
+        }
+
+        .option-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        .option-title {
+            font-weight: 600;
+            color: #333;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .option-desc {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-back {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .btn-back:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #D4A574, #F4C542);
+            color: white;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #FFF8DC, #FFE4B5);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #D4A574;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .result-title {
+            font-size: 22px;
+            color: #D4A574;
+            font-weight: 700;
+        }
+
+        .result-badge {
+            background: #D4A574;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .result-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .result-benefits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .benefit-tag {
+            background: white;
+            color: #D4A574;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid #D4A574;
+        }
+
+        .result-price {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .btn-buy {
+            background: #25D366;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-buy:active {
+            transform: scale(0.97);
+        }
+
+        .btn-buy:hover {
+            background: #20BA5A;
+            transform: translateY(-2px);
+        }
+
+        .btn-email {
+            background: #D4A574;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-email:active {
+            transform: scale(0.97);
+        }
+
+        .btn-email:hover {
+            background: #C4956A;
+            transform: translateY(-2px);
+        }
+
+        .weight-selector {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #D4A574;
+        }
+
+        .weight-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .weight-option {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .weight-option:active {
+            transform: scale(0.95);
+        }
+
+        .weight-option:hover {
+            border-color: #D4A574;
+            background: #FFF8DC;
+        }
+
+        .weight-option.selected {
+            background: #D4A574;
+            color: white;
+            border-color: #D4A574;
+        }
+
+        .result-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .btn-restart {
+            background: #f0f0f0;
+            color: #666;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-restart:hover {
+            background: #e0e0e0;
+        }
+
+        .honey-info {
+            background: linear-gradient(135deg, #FFF8DC, #FFE4B5);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #D4A574;
+        }
+
+        .ingredients-section, .usage-section {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .ingredients-section h4, .usage-section h4 {
+            color: #D4A574;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .ingredients-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ingredient-tag {
+            background: white;
+            border: 1px solid #D4A574;
+            color: #666;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .usage-text {
+            color: #555;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .routine-box {
+            background: #FFF8DC;
+            border-left: 4px solid #D4A574;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .routine-box h4 {
+            color: #D4A574;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .routine-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .routine-box li {
+            color: #555;
+            font-size: 13px;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .routine-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #D4A574;
+            font-weight: bold;
+        }
+
+        .faq-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .faq-title {
+            text-align: center;
+            color: #D4A574;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .faq-item {
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .faq-question:active {
+            background: #FFE4B5;
+        }
+
+        .faq-question:hover {
+            background: #FFF8DC;
+        }
+
+        .faq-question-text {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .faq-icon {
+            color: #D4A574;
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer-content {
+            padding: 0 20px 15px 20px;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .testimonials-section {
+            margin-top: 30px;
+            padding: 20px 0;
+        }
+
+        .testimonials-title {
+            text-align: center;
+            color: #D4A574;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-card {
+            background: #FFF8DC;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #D4A574;
+        }
+
+        .testimonial-stars {
+            color: #F4C542;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .testimonial-text {
+            color: #555;
+            font-size: 14px;
+            font-style: italic;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .testimonial-author {
+            color: #D4A574;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .comparison-table {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .comparison-table h4 {
+            color: #D4A574;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .comparison-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .comparison-value {
+            color: #888;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 22px;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                font-size: 13px;
+            }
+
+            .question h2 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .honey-info {
+                padding: 20px;
+            }
+
+            .option {
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .option:hover {
+                transform: translateX(0);
+            }
+
+            .option-icon {
+                font-size: 28px;
+            }
+
+            .option-title {
+                font-size: 15px;
+            }
+
+            .option-desc {
+                font-size: 11px;
+            }
+
+            .buttons {
+                gap: 10px;
+                margin-top: 20px;
+            }
+
+            .btn {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            /* Resultados en móvil */
+            .result-card {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .result-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .result-title {
+                font-size: 19px;
+            }
+
+            .result-badge {
+                align-self: flex-start;
+            }
+
+            .result-description {
+                font-size: 14px;
+            }
+
+            .benefit-tag {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+
+            /* Botones de compra apilados en móvil */
+            .result-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn-buy, .btn-email {
+                width: 100%;
+                text-align: center;
+                margin-right: 0;
+                padding: 14px 20px;
+                font-size: 15px;
+            }
+
+            /* Selector de peso más grande y cómodo */
+            .weight-selector {
+                padding: 12px;
+            }
+
+            .weight-selector h4 {
+                font-size: 13px;
+            }
+
+            .weight-options {
+                gap: 8px;
+                justify-content: center;
+            }
+
+            .weight-option {
+                padding: 10px 14px;
+                font-size: 13px;
+                min-width: 70px;
+                text-align: center;
+            }
+
+            /* Secciones de ingredientes y uso */
+            .ingredients-section, .usage-section {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .ingredients-section h4, .usage-section h4 {
+                font-size: 13px;
+            }
+
+            .ingredient-tag {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+
+            .usage-text {
+                font-size: 12px;
+            }
+
+            /* Rutina personalizada */
+            .routine-box {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .routine-box h4 {
+                font-size: 14px;
+            }
+
+            .routine-box ul {
+                font-size: 13px;
+            }
+
+            /* Testimonios */
+            .testimonials-title {
+                font-size: 18px;
+            }
+
+            .testimonial-card {
+                padding: 15px;
+                margin-bottom: 12px;
+            }
+
+            .testimonial-text {
+                font-size: 13px;
+            }
+
+            .testimonial-author {
+                font-size: 12px;
+            }
+
+            /* FAQs */
+            .faq-title {
+                font-size: 18px;
+            }
+
+            .faq-question-text {
+                font-size: 14px;
+            }
+
+            .faq-answer-content {
+                font-size: 13px;
+                padding: 12px;
+            }
+
+            /* Decoración de miel más pequeña */
+            .honey-decoration {
+                font-size: 100px;
+                top: -30px;
+                right: -30px;
+            }
+
+            /* Precio en resultados */
+            .result-price {
+                font-size: 13px;
+            }
+        }
+
+        /* Para pantallas muy pequeñas */
+        @media (max-width: 380px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .option {
+                padding: 12px;
+            }
+
+            .option-icon {
+                font-size: 24px;
+            }
+
+            .weight-option {
+                min-width: 60px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .btn-buy, .btn-email {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="honey-decoration">🍯</div>
+        
+        <h1>🍯 Encuentra tu Jabón Ideal</h1>
+        <p class="subtitle">Responde 3 preguntas y descubre el jabón perfecto para ti</p>
+        
+        <!-- NOTA IMPORTANTE: Cambia el número de WhatsApp en la línea 525 del código 
+             por tu número real en formato internacional (ej: 34612345678) -->
+        
+        <div class="honey-info" id="honeyInfo">
+            <h3 style="color: #D4A574; margin-bottom: 10px; font-size: 18px;">¿Por qué jabones de miel?</h3>
+            <p style="color: #666; font-size: 14px; line-height: 1.6; margin-bottom: 15px;">
+                Nuestros jabones están enriquecidos con <strong>miel pura</strong> que recolectamos cada año de nuestras propias colmenas. 
+                La miel destaca por sus múltiples beneficios: hidrata, nutre con vitaminas y minerales, y protege tu piel de forma natural. 
+                Base de glicerina vegetal con propiedades humectantes y suavizantes para todo tipo de pieles.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+                <div style="text-align: center;">
+                    <div style="font-size: 30px;">🌱</div>
+                    <div style="font-size: 11px; color: #D4A574; font-weight: 600;">100% Natural</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 30px;">🐰</div>
+                    <div style="font-size: 11px; color: #D4A574; font-weight: 600;">Cruelty Free</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 30px;">🇪🇸</div>
+                    <div style="font-size: 11px; color: #D4A574; font-weight: 600;">Hecho en España</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 30px;">🍯</div>
+                    <div style="font-size: 11px; color: #D4A574; font-weight: 600;">Miel de colmena</div>
+                </div>
+            </div>
+            <button class="btn btn-next" onclick="startQuiz()" style="width: 100%;">Comenzar el test →</button>
+        </div>
+        
+        <div class="progress-bar" id="progressBarContainer" style="display: none;">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <!-- Pregunta 1 -->
+        <div class="question" data-question="1" style="display: none;">
+            <h2>¿Cuál es tu tipo de piel?</h2>
+            <div class="options">
+                <div class="option" data-value="seca">
+                    <span class="option-icon">💧</span>
+                    <div class="option-text">
+                        <span class="option-title">Piel Seca</span>
+                        <span class="option-desc">Necesita hidratación extra</span>
+                    </div>
+                </div>
+                <div class="option" data-value="grasa">
+                    <span class="option-icon">✨</span>
+                    <div class="option-text">
+                        <span class="option-title">Piel Grasa/Acneica</span>
+                        <span class="option-desc">Tendencia a brillos y granitos</span>
+                    </div>
+                </div>
+                <div class="option" data-value="sensible">
+                    <span class="option-icon">🌸</span>
+                    <div class="option-text">
+                        <span class="option-title">Piel Sensible</span>
+                        <span class="option-desc">Se irrita fácilmente</span>
+                    </div>
+                </div>
+                <div class="option" data-value="madura">
+                    <span class="option-icon">⏳</span>
+                    <div class="option-text">
+                        <span class="option-title">Piel Madura</span>
+                        <span class="option-desc">Con líneas de expresión</span>
+                    </div>
+                </div>
+                <div class="option" data-value="cicatrices">
+                    <span class="option-icon">🩹</span>
+                    <div class="option-text">
+                        <span class="option-title">Con Cicatrices/Manchas</span>
+                        <span class="option-desc">Necesita regeneración</span>
+                    </div>
+                </div>
+                <div class="option" data-value="normal">
+                    <span class="option-icon">😊</span>
+                    <div class="option-text">
+                        <span class="option-title">Piel Normal</span>
+                        <span class="option-desc">Sin problemas específicos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 2 -->
+        <div class="question" data-question="2">
+            <h2>¿Qué beneficio buscas principalmente?</h2>
+            <div class="options">
+                <div class="option" data-value="hidratar">
+                    <span class="option-icon">💦</span>
+                    <div class="option-text">
+                        <span class="option-title">Hidratación Profunda</span>
+                        <span class="option-desc">Piel suave y nutrida</span>
+                    </div>
+                </div>
+                <div class="option" data-value="acne">
+                    <span class="option-icon">🎯</span>
+                    <div class="option-text">
+                        <span class="option-title">Combatir Acné</span>
+                        <span class="option-desc">Reducir granos e imperfecciones</span>
+                    </div>
+                </div>
+                <div class="option" data-value="calmar">
+                    <span class="option-icon">🌿</span>
+                    <div class="option-text">
+                        <span class="option-title">Calmar Irritación</span>
+                        <span class="option-desc">Aliviar rojeces y molestias</span>
+                    </div>
+                </div>
+                <div class="option" data-value="antienvejecimiento">
+                    <span class="option-icon">✨</span>
+                    <div class="option-text">
+                        <span class="option-title">Anti-envejecimiento</span>
+                        <span class="option-desc">Reducir arrugas y mejorar elasticidad</span>
+                    </div>
+                </div>
+                <div class="option" data-value="exfoliar">
+                    <span class="option-icon">🧽</span>
+                    <div class="option-text">
+                        <span class="option-title">Exfoliación Suave</span>
+                        <span class="option-desc">Eliminar células muertas</span>
+                    </div>
+                </div>
+                <div class="option" data-value="regenerar">
+                    <span class="option-icon">🔄</span>
+                    <div class="option-text">
+                        <span class="option-title">Regeneración</span>
+                        <span class="option-desc">Mejorar cicatrices y textura</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pregunta 3 -->
+        <div class="question" data-question="3">
+            <h2>¿Alguna preferencia de ingrediente?</h2>
+            <div class="options">
+                <div class="option" data-value="ninguna">
+                    <span class="option-icon">🌟</span>
+                    <div class="option-text">
+                        <span class="option-title">Sin Preferencia</span>
+                        <span class="option-desc">Recomiéndame lo mejor</span>
+                    </div>
+                </div>
+                <div class="option" data-value="lavanda">
+                    <span class="option-icon">💜</span>
+                    <div class="option-text">
+                        <span class="option-title">Lavanda</span>
+                        <span class="option-desc">Relajante y aromático</span>
+                    </div>
+                </div>
+                <div class="option" data-value="cafe">
+                    <span class="option-icon">☕</span>
+                    <div class="option-text">
+                        <span class="option-title">Café</span>
+                        <span class="option-desc">Energizante y antioxidante</span>
+                    </div>
+                </div>
+                <div class="option" data-value="aloe">
+                    <span class="option-icon">🌵</span>
+                    <div class="option-text">
+                        <span class="option-title">Aloe Vera</span>
+                        <span class="option-desc">Calmante natural</span>
+                    </div>
+                </div>
+                <div class="option" data-value="rosa">
+                    <span class="option-icon">🌹</span>
+                    <div class="option-text">
+                        <span class="option-title">Rosa Mosqueta</span>
+                        <span class="option-desc">Regenerador potente</span>
+                    </div>
+                </div>
+                <div class="option" data-value="arbol">
+                    <span class="option-icon">🌲</span>
+                    <div class="option-text">
+                        <span class="option-title">Árbol de Té</span>
+                        <span class="option-desc">Purificante antibacteriano</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        <div class="results" id="results">
+            <h2 style="color: #D4A574; margin-bottom: 20px; text-align: center;">✨ Tu Jabón Ideal ✨</h2>
+            <div id="recommendedSoaps"></div>
+            <button class="btn btn-restart" onclick="restartQuiz()">🔄 Hacer el test de nuevo</button>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="buttons" id="navigationButtons" style="display: none;">
+            <button class="btn btn-back" id="backBtn" onclick="previousQuestion()" style="display: none;">← Atrás</button>
+            <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" disabled>Siguiente →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 3;
+        let answers = {
+            skinType: '',
+            benefit: '',
+            preference: ''
+        };
+
+        // Base de datos de jabones
+        const soaps = {
+            'avena': {
+                name: 'Jabón Masajeador de Miel y Avena',
+                description: 'Mejora la circulación, hidrata y nutre tu piel. Perfecto para exfoliación suave y mejorar la apariencia de la piel.',
+                benefits: ['Hidratación', 'Exfoliación', 'Mejora circulación'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Avena', 'Aceites naturales'],
+                usage: 'Aplica sobre la piel húmeda con movimientos circulares, especialmente en zonas ásperas. Masajea suavemente durante 30 segundos y aclara con agua tibia.',
+                skinCare: 'Ideal para uso corporal 2-3 veces por semana. Conservar en lugar seco.',
+                icon: '🌾',
+                skinTypes: ['normal', 'seca', 'sensible'],
+                goals: ['hidratar', 'exfoliar'],
+                therapeutic: false,
+                exfoliation: 3,
+                aroma: 'Suave',
+                use: 'Corporal',
+                weights: {60: 3, 80: 4, 100: 5, 120: 6, 140: 7, 200: 10}
+            },
+            'cafe': {
+                name: 'Jabón de Miel, Café y Canela',
+                description: 'Antioxidante natural que energiza la piel. El café ayuda a reducir celulitis y la canela estimula la circulación.',
+                benefits: ['Antioxidante', 'Exfoliación', 'Energizante'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Café molido', 'Canela', 'Aceites esenciales'],
+                usage: 'Masajea sobre la piel húmeda con movimientos ascendentes, ideal en muslos y abdomen. Aclara bien tras 1 minuto.',
+                skinCare: 'Perfecto para uso matutino. Evitar zona de ojos. Conservar alejado de la humedad.',
+                icon: '☕',
+                skinTypes: ['normal', 'grasa', 'madura'],
+                goals: ['exfoliar', 'antienvejecimiento'],
+                therapeutic: false,
+                exfoliation: 4,
+                aroma: 'Intenso',
+                use: 'Corporal',
+                weights: {60: 3, 80: 4, 100: 5, 120: 6, 140: 7, 200: 10}
+            },
+            'curcuma': {
+                name: 'Jabón de Miel y Cúrcuma',
+                description: 'Antiinflamatorio y antioxidante natural. Ideal para unificar el tono de piel y reducir manchas.',
+                benefits: ['Antiinflamatorio', 'Ilumina la piel', 'Antioxidante'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Cúrcuma', 'Aceites vegetales'],
+                usage: 'Aplica sobre el rostro o cuerpo evitando el contorno de ojos. Masajea suavemente y deja actuar 30 segundos antes de aclarar.',
+                skinCare: 'Uso diario mañana o noche. Puede teñir temporalmente prendas claras, enjuagar bien.',
+                icon: '🟡',
+                skinTypes: ['normal', 'grasa', 'cicatrices'],
+                goals: ['regenerar', 'calmar'],
+                therapeutic: false,
+                exfoliation: 1,
+                aroma: 'Especiado',
+                use: 'Facial y Corporal',
+                weights: {60: 3, 80: 4, 100: 5, 120: 6, 140: 7, 200: 10}
+            },
+            'lavanda': {
+                name: 'Jabón de Miel y Lavanda',
+                description: 'Calmante y regenerador. Relaja la piel y favorece la cicatrización. Perfecto para todo tipo de pieles.',
+                benefits: ['Calmante', 'Relajante', 'Regenerador'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Aceite esencial de Lavanda', 'Extractos botánicos'],
+                usage: 'Ideal para uso nocturno. Aplica con suavidad sobre rostro y cuerpo. Su aroma te ayudará a relajarte antes de dormir.',
+                skinCare: 'Apto para pieles sensibles. Usar diariamente. Conservar en lugar fresco y seco.',
+                icon: '💜',
+                skinTypes: ['sensible', 'normal', 'cicatrices'],
+                goals: ['calmar', 'regenerar'],
+                preferences: ['lavanda'],
+                therapeutic: true,
+                exfoliation: 1,
+                aroma: 'Floral',
+                use: 'Facial y Corporal',
+                weights: {60: 4, 80: 5, 100: 6, 120: 7, 140: 8, 200: 11}
+            },
+            'arroz': {
+                name: 'Jabón de Miel y Arroz',
+                description: 'Suaviza e ilumina la piel. Rico en vitaminas B y E. Exfoliación muy suave ideal para pieles delicadas.',
+                benefits: ['Iluminador', 'Suavizante', 'Vitaminas'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Polvo de arroz', 'Vitaminas B y E'],
+                usage: 'Perfecto para pieles delicadas. Aplica con movimientos circulares muy suaves. Aclara con abundante agua.',
+                skinCare: 'Uso diario facial y corporal. Especialmente recomendado para iluminar el rostro.',
+                icon: '🍚',
+                skinTypes: ['sensible', 'normal', 'seca'],
+                goals: ['hidratar', 'exfoliar'],
+                therapeutic: false,
+                exfoliation: 2,
+                aroma: 'Neutro',
+                use: 'Facial y Corporal',
+                weights: {60: 3, 80: 4, 100: 5, 120: 6, 140: 7, 200: 10}
+            },
+            'rosa': {
+                name: 'Jabón de Miel y Rosa Mosqueta',
+                description: 'Regenerador y anti-envejecimiento. Atenúa cicatrices y mejora la elasticidad. Ideal para piel seca y madura.',
+                benefits: ['Regenerador', 'Anti-edad', 'Cicatrizante'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Aceite de Rosa Mosqueta', 'Vitaminas'],
+                usage: 'Aplicar sobre piel limpia con movimientos ascendentes. Para mejores resultados, usar mañana y noche en zonas con cicatrices o líneas de expresión.',
+                skinCare: 'Ideal para tratamiento anti-edad. Evitar exposición solar directa tras su uso. Conservar en lugar fresco.',
+                icon: '🌹',
+                skinTypes: ['seca', 'madura', 'cicatrices'],
+                goals: ['regenerar', 'antienvejecimiento'],
+                preferences: ['rosa'],
+                therapeutic: true,
+                exfoliation: 1,
+                aroma: 'Floral delicado',
+                use: 'Facial y Corporal',
+                weights: {60: 4, 80: 5, 100: 6, 120: 7, 140: 8, 200: 11}
+            },
+            'aloe': {
+                name: 'Jabón de Miel y Aloe Vera',
+                description: 'Eficaz para quemaduras solares, picaduras y afecciones como psoriasis. Potentes propiedades calmantes y antiinflamatorias.',
+                benefits: ['Calmante', 'Antiinflamatorio', 'Hidratante'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Gel de Aloe Vera', 'Extractos calmantes'],
+                usage: 'Perfecto para después del sol o piel irritada. Aplica con suavidad sobre la zona afectada. No frotar en exceso.',
+                skinCare: 'Ideal para primeros auxilios de piel. Mantener en nevera en verano para efecto extra refrescante.',
+                icon: '🌵',
+                skinTypes: ['sensible', 'normal', 'seca'],
+                goals: ['calmar', 'hidratar'],
+                preferences: ['aloe'],
+                therapeutic: true,
+                exfoliation: 1,
+                aroma: 'Fresco',
+                use: 'Facial y Corporal',
+                weights: {60: 4, 80: 5, 100: 6, 120: 7, 140: 8, 200: 11}
+            },
+            'espirulina': {
+                name: 'Jabón de Miel, Aceite de Oliva y Espirulina',
+                description: 'Hidratación profunda, regenerador y antioxidante potente. La espirulina es nutritiva y anti-envejecimiento.',
+                benefits: ['Hidratación profunda', 'Regenerador', 'Anti-edad'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Aceite de Oliva virgen', 'Alga Espirulina', 'Antioxidantes'],
+                usage: 'Aplica generosamente sobre piel húmeda. Deja actuar 1-2 minutos para máxima hidratación. Aclara con agua tibia.',
+                skinCare: 'Tratamiento intensivo para piel muy seca. Usar 3-4 veces por semana para resultados óptimos.',
+                icon: '🌊',
+                skinTypes: ['seca', 'madura', 'normal'],
+                goals: ['hidratar', 'antienvejecimiento', 'regenerar'],
+                therapeutic: false,
+                exfoliation: 1,
+                aroma: 'Marino suave',
+                use: 'Facial y Corporal',
+                weights: {60: 3, 80: 4, 100: 5, 120: 6, 140: 7, 200: 10}
+            },
+            'arbol_te': {
+                name: 'Jabón con Árbol de Té',
+                description: 'Antibacteriano y antifúngico. Limpieza profunda que combate el acné y el exceso de sebo. Ideal para piel grasa.',
+                benefits: ['Antibacteriano', 'Anti-acné', 'Purificante'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Aceite esencial de Árbol de Té', 'Extractos purificantes'],
+                usage: 'Crear espuma y aplicar sobre zonas con imperfecciones. Dejar actuar 30 segundos. Usar 2 veces al día para control del acné.',
+                skinCare: 'Evitar contacto con ojos. No combinar con otros tratamientos anti-acné sin consultar. Puede resecar, hidratar después.',
+                icon: '🌲',
+                skinTypes: ['grasa', 'normal'],
+                goals: ['acne'],
+                preferences: ['arbol'],
+                therapeutic: true,
+                exfoliation: 1,
+                aroma: 'Herbal intenso',
+                use: 'Facial y Corporal',
+                weights: {60: 4, 80: 5, 100: 6, 120: 7, 140: 8, 200: 11}
+            },
+            'neem': {
+                name: 'Jabón con Aceite de Neem',
+                description: 'Antiséptico y antiinflamatorio. Combate infecciones, controla la producción de sebo y calma irritaciones.',
+                benefits: ['Antiséptico', 'Antiinflamatorio', 'Control sebo'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Aceite de Neem', 'Extractos calmantes'],
+                usage: 'Aplicar sobre zonas problemáticas. Masajear suavemente. Apto para eczema y dermatitis (consultar médico en casos severos).',
+                skinCare: 'Uso terapéutico 2-3 veces por semana. Puede tener aroma intenso característico. Muy efectivo pero requiere constancia.',
+                icon: '🍃',
+                skinTypes: ['grasa', 'sensible'],
+                goals: ['acne', 'calmar'],
+                therapeutic: true,
+                exfoliation: 1,
+                aroma: 'Herbal terroso',
+                use: 'Facial y Corporal',
+                weights: {60: 4, 80: 5, 100: 6, 120: 7, 140: 8, 200: 11}
+            },
+            'centella': {
+                name: 'Jabón con Centella Asiática',
+                description: 'Regenerador y antioxidante. Mejora la cicatrización y elasticidad. Perfecto para piel sensible y madura.',
+                benefits: ['Regenerador', 'Mejora elasticidad', 'Antioxidante'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Extracto de Centella Asiática', 'Péptidos regeneradores'],
+                usage: 'Ideal para tratamiento de cicatrices y estrías. Aplicar con movimientos circulares en zonas afectadas. Usar diariamente para mejores resultados.',
+                skinCare: 'Tratamiento de cicatrización requiere paciencia. Resultados visibles en 4-6 semanas de uso constante.',
+                icon: '🌿',
+                skinTypes: ['sensible', 'madura', 'cicatrices'],
+                goals: ['regenerar', 'antienvejecimiento', 'calmar'],
+                therapeutic: true,
+                exfoliation: 1,
+                aroma: 'Herbal suave',
+                use: 'Facial y Corporal',
+                weights: {60: 4, 80: 5, 100: 6, 120: 7, 140: 8, 200: 11}
+            },
+            'vitamina_e': {
+                name: 'Jabón con Vitamina E',
+                description: 'Antioxidante e hidratante. Protege y repara la piel. Ideal para todo tipo de pieles, especialmente seca y madura.',
+                benefits: ['Antioxidante', 'Hidratante', 'Protector'],
+                ingredients: ['Miel pura', 'Glicerina vegetal', 'Vitamina E', 'Aceites nutritivos'],
+                usage: 'Uso diario como jabón facial o corporal. Protege la piel de radicales libres. Ideal antes de exposición solar (no sustituye protector solar).',
+                skinCare: 'Perfecto para prevención anti-edad. Combinar con hidratante para potenciar efectos. Apto para uso diario.',
+                icon: '💊',
+                skinTypes: ['seca', 'madura', 'normal'],
+                goals: ['hidratar', 'antienvejecimiento'],
+                therapeutic: true,
+                exfoliation: 1,
+                aroma: 'Neutro',
+                use: 'Facial y Corporal',
+                weights: {60: 4, 80: 5, 100: 6, 120: 7, 140: 8, 200: 11}
+            }
+        };
+
+        // Variables para peso seleccionado
+        let selectedWeights = {};
+
+        // Manejar selección de opciones
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.closest('.question');
+                question.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                const value = this.dataset.value;
+                const questionNum = parseInt(question.dataset.question);
+                
+                if (questionNum === 1) answers.skinType = value;
+                if (questionNum === 2) answers.benefit = value;
+                if (questionNum === 3) answers.preference = value;
+                
+                document.getElementById('nextBtn').disabled = false;
+            });
+        });
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                // Ocultar pregunta actual
+                const currentQ = document.querySelector(`[data-question="${currentQuestion}"]`);
+                currentQ.classList.remove('active');
+                currentQ.style.display = 'none';
+                
+                currentQuestion++;
+                
+                // Mostrar siguiente pregunta
+                const nextQ = document.querySelector(`[data-question="${currentQuestion}"]`);
+                nextQ.style.display = 'block';
+                nextQ.classList.add('active');
+                
+                document.getElementById('nextBtn').disabled = true;
+                document.getElementById('backBtn').style.display = 'block';
+                updateProgress();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                // Ocultar pregunta actual
+                const currentQ = document.querySelector(`[data-question="${currentQuestion}"]`);
+                currentQ.classList.remove('active');
+                currentQ.style.display = 'none';
+                
+                currentQuestion--;
+                
+                // Mostrar pregunta anterior
+                const prevQ = document.querySelector(`[data-question="${currentQuestion}"]`);
+                prevQ.style.display = 'block';
+                prevQ.classList.add('active');
+                
+                document.getElementById('nextBtn').disabled = false;
+                
+                if (currentQuestion === 1) {
+                    document.getElementById('backBtn').style.display = 'none';
+                }
+                updateProgress();
+            }
+        }
+
+        function calculateRecommendations() {
+            const recommendations = [];
+            
+            for (const [key, soap] of Object.entries(soaps)) {
+                let score = 0;
+                
+                // Puntuación por tipo de piel
+                if (soap.skinTypes.includes(answers.skinType)) {
+                    score += 3;
+                }
+                
+                // Puntuación por beneficio buscado
+                if (soap.goals.includes(answers.benefit)) {
+                    score += 3;
+                }
+                
+                // Puntuación por preferencia de ingrediente
+                if (answers.preference !== 'ninguna' && soap.preferences && soap.preferences.includes(answers.preference)) {
+                    score += 5;
+                }
+                
+                if (score > 0) {
+                    recommendations.push({ key, soap, score });
+                }
+            }
+            
+            // Ordenar por puntuación
+            recommendations.sort((a, b) => b.score - a.score);
+            
+            // Si no hay recomendaciones, mostrar las más versátiles
+            if (recommendations.length === 0) {
+                return [
+                    { key: 'lavanda', soap: soaps.lavanda, score: 1 },
+                    { key: 'aloe', soap: soaps.aloe, score: 1 }
+                ];
+            }
+            
+            // Devolver top 2-3 recomendaciones
+            return recommendations.slice(0, 3);
+        }
+
+        function showResults() {
+            const recommendations = calculateRecommendations();
+            const resultsContainer = document.getElementById('recommendedSoaps');
+            
+            // Generar rutina personalizada basada en el jabón principal
+            const mainSoap = recommendations[0].soap;
+            let routine = '';
+            
+            if (answers.benefit === 'hidratar') {
+                routine = `
+                    <li>🌅 <strong>Mañana:</strong> Usa tu jabón con agua tibia, masajea 30 segundos</li>
+                    <li>🌙 <strong>Noche:</strong> Limpia suavemente, deja actuar 1 minuto antes de aclarar</li>
+                    <li>💧 <strong>Después:</strong> Aplica crema hidratante mientras la piel está húmeda</li>
+                `;
+            } else if (answers.benefit === 'acne') {
+                routine = `
+                    <li>🌅 <strong>Mañana:</strong> Limpia con el jabón, aclara muy bien</li>
+                    <li>🌙 <strong>Noche:</strong> Usa el jabón, deja actuar 30-60 segundos</li>
+                    <li>⚠️ <strong>Importante:</strong> No frotar en exceso, hidratar después</li>
+                `;
+            } else if (answers.benefit === 'calmar') {
+                routine = `
+                    <li>🌸 <strong>Mañana y Noche:</strong> Aplica con suavidad, sin frotar</li>
+                    <li>💆 <strong>Masaje:</strong> Movimientos circulares muy suaves</li>
+                    <li>🧊 <strong>Tip:</strong> Aclara con agua fresca para efecto calmante</li>
+                `;
+            } else if (answers.benefit === 'antienvejecimiento') {
+                routine = `
+                    <li>🌅 <strong>Mañana:</strong> Limpia con movimientos ascendentes</li>
+                    <li>🌙 <strong>Noche:</strong> Deja actuar 1-2 minutos antes de aclarar</li>
+                    <li>✨ <strong>Constancia:</strong> Usa diariamente para mejores resultados</li>
+                `;
+            } else if (answers.benefit === 'exfoliar') {
+                routine = `
+                    <li>🔄 <strong>Frecuencia:</strong> 2-3 veces por semana</li>
+                    <li>💆 <strong>Técnica:</strong> Movimientos circulares suaves durante 1 minuto</li>
+                    <li>💧 <strong>Hidratación:</strong> Aplica crema generosa después</li>
+                `;
+            } else {
+                routine = `
+                    <li>🌅 <strong>Mañana:</strong> Usa con agua tibia para despertar la piel</li>
+                    <li>🌙 <strong>Noche:</strong> Limpieza profunda antes de dormir</li>
+                    <li>💧 <strong>Cuidado:</strong> Conserva en lugar seco entre usos</li>
+                `;
+            }
+            
+            resultsContainer.innerHTML = recommendations.map((rec, index) => {
+                const soapId = rec.key;
+                selectedWeights[soapId] = 100; // Peso por defecto
+                
+                // Crear estrellas de exfoliación
+                const exfoStars = '⭐'.repeat(rec.soap.exfoliation);
+                
+                return `
+                <div class="result-card">
+                    <div class="result-header">
+                        <div>
+                            <span style="font-size: 40px; margin-right: 10px;">${rec.soap.icon}</span>
+                            <span class="result-title">${rec.soap.name}</span>
+                        </div>
+                        ${index === 0 ? '<span class="result-badge">⭐ RECOMENDADO</span>' : '<span class="result-badge">También ideal</span>'}
+                    </div>
+                    <p class="result-description">${rec.soap.description}</p>
+                    <div class="result-benefits">
+                        ${rec.soap.benefits.map(b => `<span class="benefit-tag">✓ ${b}</span>`).join('')}
+                    </div>
+                    
+                    <div class="ingredients-section">
+                        <h4>🧪 Ingredientes principales</h4>
+                        <div class="ingredients-list">
+                            ${rec.soap.ingredients.map(ing => `<span class="ingredient-tag">${ing}</span>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="usage-section">
+                        <h4>📋 Modo de uso</h4>
+                        <p class="usage-text">${rec.soap.usage}</p>
+                        <p class="usage-text" style="margin-top: 8px;"><strong>Conservación:</strong> ${rec.soap.skinCare}</p>
+                    </div>
+                    
+                    <div class="comparison-table">
+                        <h4>📊 Características</h4>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Exfoliación:</span>
+                            <span class="comparison-value">${exfoStars}</span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Aroma:</span>
+                            <span class="comparison-value">${rec.soap.aroma}</span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Uso:</span>
+                            <span class="comparison-value">${rec.soap.use}</span>
+                        </div>
+                        <div class="comparison-row">
+                            <span class="comparison-label">Tipo:</span>
+                            <span class="comparison-value">${rec.soap.therapeutic ? 'Terapéutico +1€' : 'Estándar'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="weight-selector">
+                        <strong>Elige el tamaño:</strong>
+                        <div class="weight-options">
+                            ${Object.entries(rec.soap.weights).map(([weight, price]) => `
+                                <div class="weight-option ${weight == 100 ? 'selected' : ''}" 
+                                     onclick="selectWeight('${soapId}', ${weight}, ${price}, this)"
+                                     data-weight="${weight}">
+                                    ${weight}gr - ${price}€
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <p class="result-price" id="price-${soapId}">
+                        <strong>Precio:</strong> ${rec.soap.weights[100]}€ 
+                        ${rec.soap.therapeutic ? '<span style="color: #D4A574;">(Jabón terapéutico)</span>' : ''}
+                    </p>
+                    
+                    <div class="result-buttons">
+                        <a href="#" onclick="orderWhatsApp('${soapId}'); return false;" class="btn-buy">
+                            📱 Pedir por WhatsApp
+                        </a>
+                        <a href="mailto:info@hbhoneybubble.com?subject=Consulta ${rec.soap.name.replace(/'/g, '')}&body=Hola, estoy interesado/a en el ${rec.soap.name.replace(/'/g, '')}. ¿Podrían darme más información?%0D%0A%0D%0AGracias!" class="btn-email">
+                            ✉️ Consultar por Email
+                        </a>
+                    </div>
+                </div>
+            `}).join('');
+            
+            // Añadir rutina personalizada
+            const routineHTML = `
+                <div class="routine-box">
+                    <h4>💡 Tu rutina personalizada</h4>
+                    <ul>
+                        ${routine}
+                    </ul>
+                </div>
+            `;
+            
+            resultsContainer.insertAdjacentHTML('beforeend', routineHTML);
+            
+            // Añadir testimonios
+            addTestimonials();
+            
+            // Añadir FAQs
+            addFAQs();
+            
+            document.getElementById('navigationButtons').style.display = 'none';
+            document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+            document.getElementById('results').classList.add('active');
+        }
+
+        function selectWeight(soapId, weight, price, element) {
+            // Actualizar selección visual
+            const container = element.parentElement;
+            container.querySelectorAll('.weight-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            // Guardar peso seleccionado
+            selectedWeights[soapId] = weight;
+            
+            // Actualizar precio mostrado
+            const soap = soaps[soapId];
+            const priceElement = document.getElementById(`price-${soapId}`);
+            priceElement.innerHTML = `<strong>Precio:</strong> ${price}€ ${soap.therapeutic ? '<span style="color: #D4A574;">(Jabón terapéutico)</span>' : ''}`;
+        }
+
+        function orderWhatsApp(soapId) {
+            const soap = soaps[soapId];
+            const weight = selectedWeights[soapId] || 100;
+            const price = soap.weights[weight];
+            
+            // Mensaje personalizado para WhatsApp
+            const message = `¡Hola HB Honey Bubble! 🍯
+
+He completado el test de piel en vuestra web y me interesa:
+
+📦 *${soap.name}*
+⚖️ Peso: ${weight}gr
+💰 Precio: ${price}€
+
+¿Está disponible? ¿Cuál sería el coste de envío?
+
+¡Gracias!`;
+
+            // Número de WhatsApp (CAMBIAR POR TU NÚMERO)
+            const phoneNumber = '34600000000'; // Formato: código país + número sin espacios
+            
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        function restartQuiz() {
+            currentQuestion = 1;
+            answers = { skinType: '', benefit: '', preference: '' };
+            selectedWeights = {};
+            
+            // Limpiar selecciones
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            
+            // Ocultar todas las preguntas
+            document.querySelectorAll('.question').forEach(q => {
+                q.classList.remove('active');
+                q.style.display = 'none';
+            });
+            
+            // Resetear vista
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('honeyInfo').style.display = 'block';
+            document.getElementById('progressBarContainer').style.display = 'none';
+            document.getElementById('navigationButtons').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('nextBtn').disabled = true;
+            
+            updateProgress();
+        }
+
+        function startQuiz() {
+            document.getElementById('honeyInfo').style.display = 'none';
+            document.getElementById('progressBarContainer').style.display = 'block';
+            document.querySelector('[data-question="1"]').style.display = 'block';
+            document.querySelector('[data-question="1"]').classList.add('active');
+            document.getElementById('navigationButtons').style.display = 'flex';
+            currentQuestion = 1;
+            updateProgress();
+        }
+
+        function addTestimonials() {
+            const testimonialsHTML = `
+                <div class="testimonials-section">
+                    <h3 class="testimonials-title">💬 Lo que dicen nuestros clientes</h3>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"Los jabones de miel son increíbles. Mi piel nunca estuvo tan suave. El de lavanda huele maravilloso y me ayuda a relajarme por las noches."</p>
+                        <p class="testimonial-author">— María G., Madrid</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"Tengo piel sensible y el jabón de aloe vera me ha salvado. Después del sol es perfecto. Productos artesanales de verdad, se nota la calidad."</p>
+                        <p class="testimonial-author">— Ana L., Barcelona</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"El de café y canela es mi favorito para la ducha matutina. Me encanta apoyar productos locales y artesanos. Repetiré seguro."</p>
+                        <p class="testimonial-author">— Carlos R., Valencia</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('recommendedSoaps').insertAdjacentHTML('beforeend', testimonialsHTML);
+        }
+
+        function addFAQs() {
+            const faqsHTML = `
+                <div class="faq-section">
+                    <h3 class="faq-title">❓ Preguntas Frecuentes</h3>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span class="faq-question-text">¿Los jabones son aptos para veganos?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Nuestros jabones contienen miel pura de nuestras propias colmenas, por lo que no son aptos para veganos estrictos. Sin embargo, no contienen ningún otro producto de origen animal y son cruelty-free (no testados en animales).
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span class="faq-question-text">¿Cuánto tiempo duran los jabones?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                La duración depende del tamaño y frecuencia de uso. Un jabón de 100gr con uso diario dura aproximadamente 3-4 semanas. Para que duren más, mantenlos en un lugar seco entre usos y usa una jabonera con drenaje.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span class="faq-question-text">¿Hacen espuma?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Sí, nuestros jabones de glicerina producen una espuma suave y cremosa. Al ser naturales, la espuma puede ser menos abundante que los jabones comerciales con sulfatos, pero eso es señal de calidad y respeto por tu piel.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span class="faq-question-text">¿Se pueden usar en la cara?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                La mayoría de nuestros jabones son aptos para uso facial y corporal. Los jabones más suaves como lavanda, aloe vera, arroz y rosa mosqueta son especialmente recomendados para el rostro. Los exfoliantes (avena, café) mejor usarlos solo en el cuerpo o zonas específicas.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span class="faq-question-text">¿Cómo debo conservarlos?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Mantén los jabones en un lugar seco, lejos de la humedad directa. Usa una jabonera con drenaje para que no queden en contacto con el agua entre usos. Así conservarán mejor sus propiedades y durarán más tiempo.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span class="faq-question-text">¿Hacéis envíos a toda España?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Sí, realizamos envíos a toda la península y Baleares. Los tiempos de entrega son de 3-5 días laborables. Contacta con nosotros por WhatsApp o email para conocer los costes de envío según tu ubicación.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span class="faq-question-text">¿Puedo combinar varios jabones?</span>
+                            <span class="faq-icon">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                ¡Por supuesto! De hecho, es muy recomendable. Puedes usar uno exfoliante 2-3 veces por semana y otro más suave para uso diario. O uno para el cuerpo y otro para la cara. Muchos clientes combinan el de lavanda (noche) con el de café (mañana).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('recommendedSoaps').insertAdjacentHTML('beforeend', faqsHTML);
+        }
+
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const wasActive = faqItem.classList.contains('active');
+            
+            // Cerrar todos los FAQs
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Abrir el clickeado si no estaba activo
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // Inicializar
+        updateProgress();
+    </script>
+</body>
+</html>
